@@ -1,52 +1,104 @@
-# EpsteinMiner - Elite Island Mining Operation
+# PALM BEACH PETE / Case File 2026-0312-PETE
 
-## 🚀 Overview
-EpsteinMiner is a Solana-based mining dApp with 8% daily APR, featuring a modern PumpFun-inspired design with green accents and dark theme.
+A static landing page for the $PETE memecoin, designed in the visual language of a classified intelligence terminal, centered on the Palm Beach Pete meme of 2026.
 
-## 🎨 Design System
-- **Primary Color**: #00D632 (PumpFun Green)
-- **Background**: Linear gradient #1A1A1A to #0F0F0F
-- **Text**: #E0E0E0
-- **Accent**: #00FF41
+The Bureau of Memetic Identification has, by editorial fiction, opened a case file on a 71 year old Florida resident whose only confirmed activity is playing tennis. The site is the case file.
 
-## 🖼️ Images to Replace
+Built as plain HTML, CSS, and JS. No build step. No server required. Drops on any static host.
 
-| Image File | Dimensions | Description | Location |
-|------------|------------|-------------|----------|
-| **bnb_logo.png** | 150x150px | Main logo in banner | Banner section |
-| **fon.png** | 1920x1080px | Background image | Full screen background |
-| **miner.svg** | SVG | Miner icon | Miners counter |
-| **mine.svg** | SVG | Mine/cave icon | Mined section |
-| **pickaxe.svg** | SVG | Pickaxe icon | Digging section |
-| **telegram.svg** | SVG | Telegram icon | Social links |
-| **bscan_logo.png** → **solscan_logo.png** | ~40x40px | Blockchain explorer | Header/footer |
-| **Binance-Logo.svg** → **solana-logo.svg** | SVG | Chain logo | Footer |
-| **favicon.png** | 32x32px | Browser favicon | /images/icon/ |
+## File structure
 
-## 🔧 Technical Stack
-- **Blockchain**: Solana
-- **Wallet**: Phantom/Solflare
-- **DEX**: PumpFun (pump.fun) for launch, then Jupiter for trading
-- **Explorer**: Solscan
-- **Token**: $EPST (Epstein Token)
+```
+palm-beach-pete/
+  index.html
+  styles/
+    main.css
+  scripts/
+    main.js
+  README.md
+```
 
-## 📦 Installation
-1. Clone the repository
-2. Open `index.html` in a web browser
-3. Connect Phantom wallet
+## Local preview
 
-## ⚙️ Configuration
-Update these addresses in `/js/interface.js`:
-- `minersAddr`: Solana Program ID
-- `tokenAddr`: EPSTEIN Token Address
+Any static server works. The simplest options:
 
-## 🎯 Features
-- Hire Elite Miners with $EPST tokens
-- Earn 8% daily rewards paid in SOL
-- Compound SOL earnings back into $EPST
-- Withdraw SOL profits anytime
-- 5% referral system
-- Mobile responsive design
+```
+python3 -m http.server 8000
+```
 
-## 🚨 Disclaimer
-High-risk investment. Not financial advice. DYOR.
+Then open `http://localhost:8000` in a browser.
+
+If you have Node installed:
+
+```
+npx serve .
+```
+
+## Deployment
+
+The site has no build step, so it deploys cleanly to any static host:
+
+- Vercel. Drop the folder, no config needed.
+- Netlify. Drag and drop the folder into the dashboard.
+- Cloudflare Pages. Connect a repo or upload directly.
+- GitHub Pages. Push to a repo and enable Pages on the main branch.
+- AWS S3 with CloudFront. Upload the files and serve as a website.
+
+## External dependencies
+
+Two CDN dependencies, both optional in the sense that the site degrades gracefully without them:
+
+1. Google Fonts. Inter and JetBrains Mono. If the CDN is unreachable, the page falls back to system fonts.
+2. Tone.js. Loaded for the optional ambient audio feed in the bottom right. If unavailable, the toggle simply does nothing.
+
+If you need to fully self host:
+
+- Download the two Google Font families from `fonts.google.com` and replace the `<link>` tag in `index.html` with local `@font-face` declarations.
+- Download Tone.js from `https://github.com/Tonejs/Tone.js/releases` and replace the CDN script tag with a local path.
+
+## Design system
+
+A surveillance terminal aesthetic. The palette is deep blue-black with cyan, signal red, and amber accents. All typography is in JetBrains Mono and Inter, no serif. A subtle scan line overlay and a faint coordinate grid sit fixed over the page.
+
+- Background: `#05080F` void
+- Surface panels: `#0B1118` and `#111821`
+- Cyan data accent: `#00D4FF`
+- Signal red: `#FF3B30`
+- Amber caution: `#FFB800`
+- Mono: JetBrains Mono
+- Body: Inter
+
+## Pre launch checklist
+
+The site is intentionally deployable as is, without filling in placeholders for unknowns. Contract address and social URLs are not embedded anywhere, because they are not yet determined. When they are, the only updates needed are:
+
+1. `index.html`. The top bar status pill currently reads "// CLASSIFIED // OPSEC LV 4" and the case header status reads "PRE LAUNCH." On launch day, flip the case header status to "LIVE" if desired. The classification pill can stay.
+2. `index.html`. The acquisition section references pump.fun and Jupiter. If using a different launchpad or DEX at launch, update Step III accordingly. Otherwise leave as is.
+3. If a contract address or social URL needs to be displayed anywhere on the site after launch, the cleanest place to add it is the top bar (next to the case ID) or the colophon footer under the "// SUBJECT" column. Neither has a placeholder currently, so this is an addition rather than a replacement.
+4. The day counter in `scripts/main.js` references August 10th, 2019 at 10:30 UTC. This is the core conceit of the project and should remain unchanged.
+
+## Interactive features
+
+Everything on the page that looks interactive actually works. Nothing is stubbed.
+
+- The day counter counts up from zero on page load, then ticks every second against a real reference date.
+- The audio toggle in the bottom right synthesizes an ambient sub bass drone with intermittent low pulse, generated by Tone.js. No audio files are loaded.
+- The top bar navigation and footer column links scroll smoothly to the relevant section.
+- The signal bars in the top right animate to suggest a live uplink.
+- A live biometric scan line sweeps the subject's portrait.
+- A classification status dot pulses in the top left.
+- There is an undocumented easter egg accessible by entering the Konami code on a keyboard.
+
+## On the subject
+
+The site is a satirical case file referencing Palm Beach Pete, a Florida resident who went viral in March 2026 for a perceived resemblance to a deceased financier. Pete, whose real name is Peter Simel, has commercialized his own likeness through the @not_jeffepstein handle, follow up videos, and appearances on Jimmy Kimmel Live, NewsNation, and CBS 12. The Bureau has elected to believe him, with all the suspicious enthusiasm that phrase implies.
+
+## Browser support
+
+Modern evergreen browsers. Chrome, Firefox, Safari, Edge. The site uses standard HTML, CSS Grid, and CSS Custom Properties, all of which have universal support.
+
+The page is responsive and tested at viewports from 320px to 1920px wide.
+
+## License
+
+Memetic. Use it. Modify it. File the case.

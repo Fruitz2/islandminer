@@ -3,27 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site - no start needed'"
   },
-  "dependencies": {
-    "next": "14.2.33",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^3.4.1",
-    "postcss": "^8",
-    "autoprefixer": "^10.0.1",
-    "typescript": "^5",
-    "@solana/web3.js": "^1.87.6",
-    "lucide-react": "^0.294.0"
-  },
-  "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.2.33",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

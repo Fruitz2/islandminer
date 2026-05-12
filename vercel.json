@@ -1,5 +1,6 @@
 {
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next"
+  "framework": null,
+  "buildCommand": "echo 'Static site - no build needed'",
+  "outputDirectory": "./",
+  "installCommand": "npm install"
 }

@@ -122,6 +122,24 @@ body::after {
 }
 .topbar a:hover, .topbar a:focus { color: var(--cyan); outline: none; }
 
+.topbar .social-link {
+  min-width: 32px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 8px;
+  border: 1px solid var(--border-hot);
+  color: var(--text);
+  background: rgba(11, 17, 26, 0.82);
+  font-weight: 700;
+}
+
+.topbar .social-link:hover,
+.topbar .social-link:focus {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
 .signal {
   display: inline-flex;
   align-items: center;

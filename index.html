@@ -29,7 +29,7 @@
     <a href="#resemblance">05 FORENSIC</a>
     <a href="#phases">06 OPS</a>
     <a href="#acquire">07 PROC</a>
-    <a href="#staking">08 STAKE</a>
+    <a href="#staking">08 REWARDS</a>
     <a href="/counter/">09 COUNTER</a>
   </div>
   <div class="topbar-right">
@@ -713,11 +713,11 @@
   <div class="section-inner">
     <div class="section-head">
       <span class="sec-num">// 08</span>
-      <span class="sec-name">FEE VAULT / STAKING TERMINAL</span>
+      <span class="sec-name">FEE VAULT / HOLDER REWARDS</span>
       <span class="sec-meta" id="staking-mode">SYNCING REWARD POOL</span>
     </div>
-    <h2 class="section-title">Stake. Pool. <em>Claim</em>.</h2>
-    <p class="section-dek">Stake $PETE to share the SOL creator-fee pool. Creator fees are swept into the vault, allocated across live stakers, and claimed directly from the staking program.</p>
+    <h2 class="section-title">Hold. Snapshot. <em>Paid</em>.</h2>
+    <p class="section-dek">Hold $PETE to share the SOL creator-fee pool. Creator fees are sent to the distributor wallet, split by hourly holder snapshot, and paid directly to eligible wallets.</p>
 
     <div class="grid-stats">
       <div class="gs-card">
@@ -731,9 +731,9 @@
         <span class="gs-note" id="price-note">live SOL/USD pending</span>
       </div>
       <div class="gs-card">
-        <span class="gs-label">$PETE STAKED</span>
+        <span class="gs-label">ELIGIBLE HOLDERS</span>
         <span class="gs-value" id="total-staked-pete">0</span>
-        <span class="gs-note" id="pool-note">pool not initialized</span>
+        <span class="gs-note" id="pool-note">last snapshot pending</span>
       </div>
       <div class="gs-card hot">
         <span class="gs-label">YOUR WALLET</span>
@@ -745,7 +745,7 @@
     <div class="staking-row">
       <div class="console">
         <div class="console-head">
-          <span>// STAKING CONSOLE</span>
+          <span>// HOLDER CONSOLE</span>
           <span class="console-status" id="wallet-status">NODE UNAUTHORIZED</span>
         </div>
         <div class="console-body">
@@ -753,7 +753,7 @@
             <span class="cs-num">01</span>
             <div class="cs-content">
               <h5>Authorize Wallet</h5>
-              <p>Connect Phantom to read your $PETE balance, sign stake transactions, and claim SOL rewards assigned to your position.</p>
+              <p>Connect Phantom to read your $PETE balance. Rewards are automatic, so no stake transaction or claim button is required.</p>
               <button class="console-btn primary" id="wallet-btn" type="button">
                 <span class="cb-dot"></span>
                 <span class="cb-label">CONNECT PHANTOM</span>
@@ -764,31 +764,31 @@
           <div class="console-step disabled" id="step-deploy">
             <span class="cs-num">02</span>
             <div class="cs-content">
-              <h5>Stake $PETE</h5>
-              <p>Lock $PETE in the program vault. New SOL fees are allocated by your share of the staked pool at the moment each sweep lands.</p>
+              <h5>Hold $PETE</h5>
+              <p>Keep $PETE in your wallet. The hourly worker reads holder balances and calculates the direct SOL payout from the distributor wallet.</p>
               <div class="cs-input-row">
-                <input type="text" class="cs-input" placeholder="$PETE amount" inputmode="decimal" disabled aria-label="Amount of PETE to stake or unstake" id="stake-input">
+                <input type="text" class="cs-input" placeholder="staking disabled" inputmode="decimal" disabled aria-label="Automatic holder rewards do not require staking" id="stake-input">
                 <div class="cs-button-pair">
-                  <button class="console-btn primary" disabled id="stake-btn">STAKE</button>
-                  <button class="console-btn" disabled id="unstake-btn">UNSTAKE</button>
+                  <button class="console-btn primary" disabled id="stake-btn">AUTO</button>
+                  <button class="console-btn" disabled id="unstake-btn">NO LOCK</button>
                 </div>
               </div>
-              <p class="cs-balance">$PETE balance: <strong id="pete-bal">--</strong> &nbsp;/&nbsp; staked: <strong id="pete-staked">--</strong></p>
+              <p class="cs-balance">$PETE balance: <strong id="pete-bal">--</strong> &nbsp;/&nbsp; lockup: <strong id="pete-staked">none</strong></p>
             </div>
           </div>
 
           <div class="console-step disabled" id="step-claim">
             <span class="cs-num">03</span>
             <div class="cs-content">
-              <h5>Claim SOL</h5>
-              <p>Claimable rewards stay in the program vault until your wallet signs a claim. Unstaked users keep rewards already allocated to them.</p>
+              <h5>Receive SOL</h5>
+              <p>Eligible payouts are sent directly to holder wallets. Anything below the dust threshold stays in the distributor for the next run.</p>
               <div class="cs-input-row">
                 <div class="claim-meter">
-                  <span>CLAIMABLE</span>
+                  <span>AUTOMATIC</span>
                   <strong id="sol-claimable">0.0000 SOL</strong>
                   <small id="claimable-usd">$0.00</small>
                 </div>
-                <button class="console-btn primary" disabled id="claim-btn">CLAIM SOL</button>
+                <button class="console-btn primary" disabled id="claim-btn">AUTO PAY</button>
               </div>
               <p class="stake-message" id="stake-message">fee vault waiting for configuration</p>
             </div>
@@ -804,7 +804,7 @@
         <div class="trans-body">
           <div class="trans-pending">
             <span class="tp-icon"></span>
-            <p id="pool-summary">The fee vault is waiting for the staking program, token mint, and private distributor wallet to be configured.</p>
+            <p id="pool-summary">The fee vault is waiting for the token mint and private distributor wallet to be configured.</p>
           </div>
 
           <div class="trans-examples">
@@ -823,15 +823,15 @@
             </div>
             <div class="te-row alert">
               <span class="te-ts">VAULT</span>
-              <span class="te-node">REWARD PDA</span>
+              <span class="te-node">PAYOUT WALLET</span>
               <span class="te-action" id="reward-vault-address">not configured</span>
               <span class="te-yield" id="vault-balance">0.0000 SOL HELD</span>
             </div>
             <div class="te-row alert">
               <span class="te-ts">CRON</span>
-              <span class="te-node">HOURLY SWEEP</span>
+              <span class="te-node">HOURLY PAYOUT</span>
               <span class="te-action" id="distributor-address">distributor wallet not configured</span>
-              <span class="te-yield" id="claimed-total">0.0000 SOL CLAIMED</span>
+              <span class="te-yield" id="claimed-total">0.0000 SOL PAID</span>
             </div>
           </div>
         </div>
@@ -839,9 +839,9 @@
     </div>
 
     <div class="grid-footer">
-      <span>// STAKE TOKEN. <strong class="cyan">$PETE</strong></span>
+      <span>// HOLDER TOKEN. <strong class="cyan">$PETE</strong></span>
       <span>// REWARD ASSET. native <strong class="cyan">SOL</strong></span>
-      <span>// VAULT. <strong class="red" id="vault-state">AWAITING CONFIGURATION</strong></span>
+      <span>// PAYOUTS. <strong class="red" id="vault-state">AWAITING CONFIGURATION</strong></span>
     </div>
   </div>
 </section>
@@ -865,7 +865,7 @@
         <a href="#resemblance">05 Forensic</a>
         <a href="#phases">06 Operational</a>
         <a href="#acquire">07 Procurement</a>
-        <a href="#staking">08 Staking Vault</a>
+        <a href="#staking">08 Holder Rewards</a>
         <a href="/counter/">09 Live Counter</a>
       </div>
       <div class="colo-col">

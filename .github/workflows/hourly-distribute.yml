@@ -5,6 +5,9 @@ on:
     - cron: "0 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   distribute:
     runs-on: ubuntu-latest
@@ -19,17 +22,30 @@ jobs:
 
       - run: npm ci
 
-      - name: Fund staking reward vault
-        run: node scripts/fund-rewards.js
+      - name: Distribute SOL directly to PETE holders
+        run: npm run rewards:distribute
         env:
           SOLANA_NETWORK: mainnet-beta
-          STAKING_PROGRAM_ID: BxXchZ6JkP4ybA74BfA1itf7fGv6XqFtwnwSDX6JaCsj
           PETE_MINT: ${{ secrets.PETE_MINT }}
-          ADMIN_PUBLIC_KEY: 8GEiwuVVHykQTGHDPXjLXx2Szp3uRGXqX2ekrUu29TqB
           DISTRIBUTOR_PUBLIC_KEY: 6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr
           HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
           HELIUS_RPC_URL: ${{ secrets.HELIUS_RPC_URL }}
-          BIRDEYE_API_KEY: ${{ secrets.BIRDEYE_API_KEY }}
           DISTRIBUTOR_PRIVATE_KEY: ${{ secrets.DISTRIBUTOR_PRIVATE_KEY }}
           DISTRIBUTOR_SOL_RESERVE: ${{ secrets.DISTRIBUTOR_SOL_RESERVE }}
           MIN_REWARD_SOL: ${{ secrets.MIN_REWARD_SOL }}
+          MIN_PAYOUT_LAMPORTS: ${{ secrets.MIN_PAYOUT_LAMPORTS }}
+          MIN_HOLDER_TOKENS: ${{ secrets.MIN_HOLDER_TOKENS }}
+          EXCLUDED_HOLDERS: ${{ secrets.EXCLUDED_HOLDERS }}
+          DISTRIBUTION_BATCH_SIZE: ${{ secrets.DISTRIBUTION_BATCH_SIZE }}
+
+      - name: Commit public reward ledger
+        run: |
+          if ! git diff --quiet -- data/rewards.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/rewards.json
+            git commit -m "Update holder reward ledger"
+            git push
+          else
+            echo "No ledger changes."
+          fi

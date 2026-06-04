@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "mode": "holder-distribution",
+  "updatedAt": null,
+  "peteMint": "",
+  "distributorPublicKey": "6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr",
+  "tokenDecimals": 6,
+  "totals": {
+    "totalDistributedLamports": "0",
+    "distributionCount": 0,
+    "recipientCount": 0
+  },
+  "lastDistribution": null,
+  "distributions": []
+}

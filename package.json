@@ -10,8 +10,10 @@
     "serve": "npx serve .",
     "setup:env": "node scripts/setup-local-env.js",
     "wallets:generate": "node scripts/generate-wallets.js",
+    "rewards:distribute": "node scripts/distribute-holder-rewards.js",
+    "rewards:dry-run": "node scripts/distribute-holder-rewards.js --dry-run",
     "staking:init": "node scripts/init-staking.js",
-    "staking:fund": "node scripts/fund-rewards.js",
+    "staking:fund": "node scripts/distribute-holder-rewards.js",
     "staking:sweep": "node scripts/sweep-unallocated.js"
   },
   "dependencies": {

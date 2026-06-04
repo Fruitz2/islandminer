@@ -1,5 +1,3 @@
-import { Transaction } from 'https://esm.sh/@solana/web3.js@1.98.4?bundle';
-
 const els = {
   mode: document.getElementById('staking-mode'),
   walletBtn: document.getElementById('wallet-btn'),
@@ -89,22 +87,6 @@ function getProvider() {
   return null;
 }
 
-function fromBase64(value) {
-  const binary = atob(value);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  return bytes;
-}
-
-function toBase64(bytes) {
-  let binary = '';
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
-  }
-  return btoa(binary);
-}
-
 function renderDisconnected() {
   connectedPubkey = null;
   setText(els.walletStatus, 'NODE UNAUTHORIZED');
@@ -129,12 +111,11 @@ function renderConnected(pubkey) {
     els.position.classList.remove('red');
     els.position.classList.add('cyan');
   }
-  setText(els.positionNote, 'authorized / reading position');
+  setText(els.positionNote, 'authorized / reading holder balance');
 }
 
 function statusCopy(stats) {
   if (!stats || !stats.stakingConfigured) return ['NEEDS ENV', 'AWAITING CONFIGURATION'];
-  if (!stats.stakingInitialized) return ['PROGRAM READY', 'NEEDS INITIALIZATION'];
   if (stats.paused) return ['PAUSED', 'PAUSED BY ADMIN'];
   if (stats.stakingEnabled) return ['LIVE', 'LIVE'];
   return ['SYNCING', 'SYNCING'];
@@ -156,56 +137,54 @@ function renderStats(stats) {
 
   setText(els.totalFundedSol, data ? Number(data.totals.totalFundedSol || 0).toFixed(4) : '0.0000');
   setText(els.totalFundedUsd, data && data.totals.totalFundedUsd ? formatUsd(data.totals.totalFundedUsd) : '$0.00');
-  setText(els.totalStaked, data ? data.totals.totalStaked : '0');
-  setText(els.fundedNote, data && data.totals.totalFundedSol > 0 ? 'creator-fee SOL funded' : 'awaiting first fee sweep');
+  setText(els.totalStaked, data ? String(data.totals.eligibleHolderCount || 0) : '0');
+  setText(els.fundedNote, data && data.totals.totalFundedSol > 0 ? 'creator-fee SOL paid' : 'awaiting first fee sweep');
   setText(els.priceNote, data && data.price ? `${data.price.source.toUpperCase()} / ${formatUsd(data.price.priceUsd)}` : 'live SOL/USD pending');
-  setText(els.poolNote, data && data.stakingInitialized ? `${formatSol(data.totals.allocatedUnclaimedSol)} unclaimed` : 'pool not initialized');
+  setText(els.poolNote, data && data.stakingInitialized ? `${data.totals.distributionCount || 0} payout runs` : 'snapshot not initialized');
 
   setText(els.poolLive, enabled ? 'LIVE' : 'OFFLINE');
   if (els.poolLive) els.poolLive.classList.toggle('online', enabled);
   setText(els.poolSummary, enabled
-    ? 'Creator-fee SOL is routed into the reward vault and allocated across active $PETE stakers.'
-    : 'The fee vault is waiting for the staking program, token mint, and private distributor wallet to be configured.');
+    ? 'Creator-fee SOL is paid directly from the distributor wallet to eligible $PETE holders on the hourly snapshot.'
+    : 'The fee vault is waiting for the token mint and private distributor wallet to be configured.');
   setText(els.rpcStatus, data ? 'ONLINE' : 'WAITING');
   setText(els.priceSource, data && data.price ? data.price.source.toUpperCase() : 'PENDING');
-  setText(els.rewardVault, data && data.pdas ? data.pdas.rewardVault : 'not configured');
+  setText(els.rewardVault, data && data.distributorPublicKey ? data.distributorPublicKey : 'not configured');
   setText(els.vaultBalance, data ? `${formatSol(data.totals.rewardVaultSol)} HELD` : '0.0000 SOL HELD');
   setText(els.distributor, data && data.distributorPublicKey ? data.distributorPublicKey : 'distributor wallet not configured');
-  setText(els.claimedTotal, data ? `${formatSol(data.totals.totalClaimedSol)} CLAIMED` : '0.0000 SOL CLAIMED');
+  setText(els.claimedTotal, data ? `${formatSol(data.totals.totalClaimedSol)} PAID` : '0.0000 SOL PAID');
 
   if (connected && data && data.wallet) {
     setText(els.peteBalance, data.wallet.peteBalance || '0');
-    setText(els.peteStaked, data.wallet.staked || '0');
-    setText(els.claimableSol, formatSol(data.wallet.claimableSol));
-    setText(els.claimableUsd, formatUsd(data.wallet.claimableUsd || 0));
-    setText(els.positionNote, `${data.wallet.staked || '0'} $PETE staked`);
+    setText(els.peteStaked, 'none');
+    setText(els.claimableSol, 'automatic');
+    setText(els.claimableUsd, 'direct payout');
+    setText(els.positionNote, `${data.wallet.peteBalance || '0'} $PETE held`);
   } else {
     setText(els.peteBalance, '--');
-    setText(els.peteStaked, '--');
-    setText(els.claimableSol, '0.0000 SOL');
-    setText(els.claimableUsd, '$0.00');
+    setText(els.peteStaked, 'none');
+    setText(els.claimableSol, 'automatic');
+    setText(els.claimableUsd, 'direct payout');
   }
 
   setStepState(els.stepAuth, !connected);
-  setStepState(els.stepDeploy, connected && enabled);
-  setStepState(els.stepClaim, connected && enabled);
-  setDisabled(els.stakeInput, busy || !connected || !enabled);
-  setDisabled(els.stakeBtn, busy || !connected || !enabled);
-  setDisabled(els.unstakeBtn, busy || !connected || !enabled);
-  setDisabled(els.claimBtn, busy || !connected || !enabled || !(data && data.wallet && data.wallet.claimableSol > 0));
+  setStepState(els.stepDeploy, connected);
+  setStepState(els.stepClaim, connected);
+  setDisabled(els.stakeInput, true);
+  setDisabled(els.stakeBtn, true);
+  setDisabled(els.unstakeBtn, true);
+  setDisabled(els.claimBtn, true);
 
   if (!data) {
     setMessage('fee vault telemetry unavailable', 'warn');
   } else if (!data.stakingConfigured) {
-    setMessage('set STAKING_PROGRAM_ID and PETE_MINT in deployment env', 'warn');
-  } else if (!data.stakingInitialized) {
-    setMessage('run npm run staking:init after the token launches', 'warn');
+    setMessage('set PETE_MINT after launch', 'warn');
   } else if (data.paused) {
-    setMessage('staking is paused by admin', 'warn');
+    setMessage('holder rewards are paused', 'warn');
   } else if (!connected) {
-    setMessage('connect Phantom to stake and claim');
+    setMessage('connect Phantom to inspect your $PETE balance');
   } else {
-    setMessage('ready');
+    setMessage('no staking required; payouts are automatic', 'ok');
   }
 }
 
@@ -241,61 +220,6 @@ async function connectWallet() {
   }
 }
 
-async function postJson(url, body) {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const json = await response.json();
-  if (!response.ok || !json.ok) throw new Error(json.error || 'Request failed');
-  return json;
-}
-
-async function runTx(type) {
-  if (!connectedPubkey || busy) return;
-  const provider = getProvider();
-  if (!provider) throw new Error('Phantom not detected');
-
-  const amount = type === 'claim' ? undefined : els.stakeInput.value.trim();
-  busy = true;
-  renderStats(currentStats);
-  setMessage(`${type.toUpperCase()} transaction requested`);
-
-  try {
-    const built = await postJson('/api/tx', {
-      type,
-      wallet: connectedPubkey,
-      amount
-    });
-
-    const tx = Transaction.from(fromBase64(built.transaction));
-    let signature = '';
-
-    if (provider.signTransaction) {
-      const signed = await provider.signTransaction(tx);
-      const sent = await postJson('/api/send', {
-        transaction: toBase64(signed.serialize())
-      });
-      signature = sent.signature;
-    } else if (provider.signAndSendTransaction) {
-      const sent = await provider.signAndSendTransaction(tx);
-      signature = sent.signature || sent;
-    } else {
-      throw new Error('Wallet does not support transaction signing');
-    }
-
-    setMessage(`submitted ${short(signature)}`, 'ok');
-    if (type !== 'claim' && els.stakeInput) els.stakeInput.value = '';
-    window.setTimeout(fetchStats, 1800);
-  } catch (error) {
-    setMessage(error.message || 'transaction failed', 'warn');
-  } finally {
-    busy = false;
-    renderStats(currentStats);
-  }
-}
-
 function bindWalletEvents() {
   const provider = getProvider();
   if (!provider || !provider.on) return;
@@ -319,9 +243,6 @@ function bindWalletEvents() {
 }
 
 if (els.walletBtn) els.walletBtn.addEventListener('click', () => connectWallet().catch((error) => setMessage(error.message, 'warn')));
-if (els.stakeBtn) els.stakeBtn.addEventListener('click', () => runTx('stake'));
-if (els.unstakeBtn) els.unstakeBtn.addEventListener('click', () => runTx('unstake'));
-if (els.claimBtn) els.claimBtn.addEventListener('click', () => runTx('claim'));
 
 bindWalletEvents();
 fetchStats().catch((error) => {

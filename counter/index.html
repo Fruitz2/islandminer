@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EPSTEINMINER / PETE Fee Counter</title>
-<meta name="description" content="Live public counter for $PETE creator-fee SOL routed into the staking reward vault.">
+<meta name="description" content="Live public counter for $PETE creator-fee SOL distributed directly to holders.">
 <meta property="og:title" content="EPSTEINMINER / PETE Fee Counter">
-<meta property="og:description" content="Live public counter for $PETE creator-fee SOL routed into the staking reward vault.">
+<meta property="og:description" content="Live public counter for $PETE creator-fee SOL distributed directly to holders.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="/og.png">
 <link rel="icon" href="/public/favicon.svg">
@@ -23,7 +23,7 @@
           <span class="brand-mark">P.</span>
           <span>
             <strong>PALM BEACH PETE</strong>
-            <small>creator-fee vault monitor</small>
+            <small>holder reward monitor</small>
           </span>
         </a>
         <div class="status-actions">
@@ -40,9 +40,9 @@
 
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">PUBLIC LEDGER / STAKING REWARDS</p>
-          <h1>Creator fees into the vault, counted live.</h1>
-          <p class="lede">When $PETE creator-fee SOL is swept into the staking program, the pool updates here. Stakers share the reward vault by their live stake at the moment each sweep lands.</p>
+          <p class="eyebrow">PUBLIC LEDGER / HOLDER REWARDS</p>
+          <h1>Creator fees to holders, counted live.</h1>
+          <p class="lede">When $PETE creator-fee SOL reaches the distributor wallet, the hourly worker snapshots holders and sends SOL directly by wallet balance. No staking lockup, no program rent.</p>
         </div>
 
         <div class="subject-panel" aria-label="Palm Beach Pete biometric panel">
@@ -79,24 +79,24 @@
 
     <section class="metric-grid" aria-label="Vault metrics">
       <article class="metric-card">
-        <span>Claimed By Stakers</span>
+        <span>Paid To Holders</span>
         <strong id="claimed-sol">0.0000 SOL</strong>
         <small id="claimed-usd">$0.00</small>
       </article>
       <article class="metric-card">
-        <span>Allocated, Unclaimed</span>
+        <span>Waiting Next Payout</span>
         <strong id="unclaimed-sol">0.0000 SOL</strong>
         <small id="unclaimed-usd">$0.00</small>
       </article>
       <article class="metric-card">
-        <span>Reward Vault Balance</span>
+        <span>Distributor Balance</span>
         <strong id="vault-sol">0.0000 SOL</strong>
-        <small>held by program PDA</small>
+        <small>held by payout wallet</small>
       </article>
       <article class="metric-card">
-        <span>$PETE Staked</span>
+        <span>Eligible Holders</span>
         <strong id="total-staked">0</strong>
-        <small>live program total</small>
+        <small>last hourly snapshot</small>
       </article>
     </section>
 
@@ -106,7 +106,7 @@
           <span>// TRANSMISSION</span>
           <strong id="mode-line">Awaiting launch configuration</strong>
         </div>
-        <p id="narrative-copy">The vault is staged. Once the token mint and staking program are initialized, every funded creator-fee sweep will update the public counter automatically.</p>
+        <p id="narrative-copy">The holder reward system is staged. Once the token mint is configured, every funded creator-fee sweep will update the public counter automatically.</p>
         <div class="flow-line">
           <div>
             <span>01</span>
@@ -118,11 +118,11 @@
           </div>
           <div>
             <span>03</span>
-            <strong>Staking vault</strong>
+            <strong>Holder snapshot</strong>
           </div>
           <div>
             <span>04</span>
-            <strong>Staker claims</strong>
+            <strong>SOL payouts</strong>
           </div>
         </div>
       </div>
@@ -133,9 +133,9 @@
           <strong id="rpc-line">server proxy</strong>
         </div>
         <dl>
-          <dt>Program</dt>
+          <dt>Mode</dt>
           <dd id="program-id">not configured</dd>
-          <dt>Reward Vault</dt>
+          <dt>Payout Wallet</dt>
           <dd id="reward-vault">not configured</dd>
           <dt>Distributor</dt>
           <dd id="distributor">not configured</dd>

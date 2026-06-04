@@ -1,71 +1,113 @@
-# PETE Staking Setup
+# PETE Holder Rewards Setup
 
-This repo is safe to push public. Real API keys and private keys live only in GitHub/Vercel secrets or the ignored local files `.env.local` and `.keys/`.
+This is the cheap setup. There is no staking program deployment and no 2.5 SOL program-rent deposit.
 
-## Generated Local Wallets
+Creator-fee SOL goes to the distributor wallet. A GitHub Action runs every hour, snapshots `$PETE` holders, sends SOL directly to eligible holders, and commits `data/rewards.json` so the public counter updates.
 
-- Creator wallet for Pump.fun launch: `7kTwz1Eyc1D1r4p4xnjJwCyrJuVJFPoZSAsrcvBvurZA`
-- Distributor wallet for fee sweeps: `6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr`
+## Public Wallets
+
+- Pump.fun creator wallet: `7kTwz1Eyc1D1r4p4xnjJwCyrJuVJFPoZSAsrcvBvurZA`
+- SOL distributor wallet: `6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr`
 - Admin/recovery wallet: `8GEiwuVVHykQTGHDPXjLXx2Szp3uRGXqX2ekrUu29TqB`
-- Staking program ID: `BxXchZ6JkP4ybA74BfA1itf7fGv6XqFtwnwSDX6JaCsj`
 
-Private keys are in `.keys/*.json`. That folder is gitignored. Back it up somewhere private before using real funds.
+Private keys are in `.keys/*.json` and the desktop export. They are gitignored. Do not commit them.
 
-## Lazy Launch Flow
+## Required Envs
 
-1. Launch `$PETE` on Pump.fun using the creator wallet above, or set your Pump creator/fee recipient to that wallet.
-2. Put the final `$PETE` mint address into `.env.local` as `PETE_MINT=...`.
-3. Deploy the staking program:
+### GitHub Actions Secrets
 
-```bash
-anchor build
-anchor deploy --program-keypair .keys/pete_staking-keypair.json
-npm run staking:init
-```
-
-4. Set the public launch value in Vercel, or hardcode it as a public default after launch:
+Set these in `Fruitz2/islandminer` -> Settings -> Secrets and variables -> Actions -> Repository secrets.
 
 ```bash
-PETE_MINT
+PETE_MINT=PUT_FINAL_PUMP_FUN_TOKEN_MINT_HERE
+DISTRIBUTOR_PRIVATE_KEY=BASE58_PRIVATE_KEY_FROM_DESKTOP_FILE
+HELIUS_API_KEY=YOUR_HELIUS_KEY
 ```
 
-5. Put the private worker values in GitHub Actions secrets for `Fruitz2/islandminer`:
+That is the minimum.
+
+Recommended optional secrets:
 
 ```bash
-DISTRIBUTOR_PRIVATE_KEY
-HELIUS_API_KEY
-HELIUS_RPC_URL
-BIRDEYE_API_KEY
-DISTRIBUTOR_SOL_RESERVE
-MIN_REWARD_SOL
+DISTRIBUTOR_SOL_RESERVE=0.02
+MIN_REWARD_SOL=0.001
+MIN_PAYOUT_LAMPORTS=5000
+MIN_HOLDER_TOKENS=0
+DISTRIBUTION_BATCH_SIZE=12
+EXCLUDED_HOLDERS=
 ```
 
-Do not use `.keys/distributor.json` as a hosted secret value. That path only works locally. Use the base58 private key from `~/Desktop/epstein private keys.txt` for `DISTRIBUTOR_PRIVATE_KEY`.
+`HELIUS_RPC_URL` can be set instead of `HELIUS_API_KEY` if you already have the full URL.
 
-Keep `ADMIN_PRIVATE_KEY` local unless you intentionally add an admin-only recovery endpoint later. The deployed app and hourly worker do not need it.
+### Vercel Envs
 
-6. Manually send claimed Pump.fun creator-fee SOL to the distributor wallet.
-7. GitHub Actions runs `scripts/fund-rewards.js` every hour and funds the reward vault directly.
-
-Vercel only hosts the website and API endpoint. The hourly scheduler lives in `.github/workflows/hourly-distribute.yml`, so the project does not need Vercel Cron or Render.
-
-If the scheduler is disabled or you want to fund manually, run:
+Set these in Vercel -> Project -> Settings -> Environment Variables.
 
 ```bash
-npm run staking:fund -- 0.1
+PETE_MINT=PUT_FINAL_PUMP_FUN_TOKEN_MINT_HERE
+HELIUS_API_KEY=YOUR_HELIUS_KEY
 ```
+
+Optional:
+
+```bash
+HELIUS_RPC_URL=FULL_HELIUS_RPC_URL_IF_YOU_PREFER
+```
+
+Do not put `DISTRIBUTOR_PRIVATE_KEY` in Vercel. The website/API does not need it. Only GitHub Actions needs the private key.
+
+## Launch Flow
+
+1. Launch `$PETE` on Pump.fun.
+2. Copy the final `$PETE` mint address.
+3. Add `PETE_MINT` to GitHub Actions secrets.
+4. Add `PETE_MINT` to Vercel env vars.
+5. Make sure GitHub Actions has `DISTRIBUTOR_PRIVATE_KEY` and `HELIUS_API_KEY`.
+6. Send Pump.fun creator-fee SOL to the distributor wallet:
+
+```bash
+6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr
+```
+
+7. Wait for the hourly GitHub Action, or manually run `Hourly Reward Distribution` from the GitHub Actions tab.
+
+The worker leaves `DISTRIBUTOR_SOL_RESERVE` in the distributor wallet and sends the rest to eligible holders.
+
+## Local Test
+
+Use dry-run first. It does not send SOL.
+
+```bash
+npm run rewards:dry-run
+```
+
+Real payout:
+
+```bash
+npm run rewards:distribute
+```
+
+## Counter
+
+Public counter:
+
+```bash
+https://epsteinminer.xyz/counter/
+```
+
+The counter reads:
+
+- `data/rewards.json` for historical distributed SOL
+- Jupiter for latest SOL/USD
+- the distributor wallet for SOL waiting for the next payout
 
 ## Recovery
 
-The admin wallet can sweep unallocated or accidentally stuck SOL without touching SOL already owed to stakers:
+There is no program vault. Any SOL not distributed stays in the distributor wallet. Import the distributor private key and send it out manually if needed.
 
-```bash
-npm run staking:sweep -- YOUR_DESTINATION_WALLET
-```
+## Security
 
-## Security Rules
-
-- Do not commit `.env.local`.
-- Do not commit `.keys/`.
-- Do not prefix secrets with `VITE_`.
 - Rotate any GitHub token pasted into chat.
+- Never commit `.env.local`.
+- Never commit `.keys/`.
+- Never put private keys in Vercel unless there is a very specific reason.

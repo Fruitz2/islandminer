@@ -24,22 +24,22 @@ function readExistingLocalEnv() {
 function writeEnv(values) {
   const order = [
     'SOLANA_NETWORK',
-    'STAKING_PROGRAM_ID',
     'PETE_MINT',
-    'ADMIN_PUBLIC_KEY',
     'DISTRIBUTOR_PUBLIC_KEY',
     'HELIUS_API_KEY',
     'HELIUS_RPC_URL',
-    'BIRDEYE_API_KEY',
     'DISTRIBUTOR_PRIVATE_KEY',
-    'ADMIN_PRIVATE_KEY',
     'CRON_SECRET',
     'DISTRIBUTOR_SOL_RESERVE',
-    'MIN_REWARD_SOL'
+    'MIN_REWARD_SOL',
+    'MIN_PAYOUT_LAMPORTS',
+    'MIN_HOLDER_TOKENS',
+    'DISTRIBUTION_BATCH_SIZE',
+    'EXCLUDED_HOLDERS'
   ];
 
   const lines = [
-    '# Local secrets for Palm Beach Pete staking.',
+    '# Local secrets for Palm Beach Pete holder rewards.',
     '# This file is gitignored. Do not paste these values into public code.',
     ''
   ];
@@ -59,18 +59,18 @@ const existing = readExistingLocalEnv();
 const heliusKey = existing.HELIUS_API_KEY || bundler.HELIUS_API_KEY || '';
 const values = {
   SOLANA_NETWORK: existing.SOLANA_NETWORK || bundler.SOLANA_NETWORK || 'mainnet-beta',
-  STAKING_PROGRAM_ID: existing.STAKING_PROGRAM_ID || '',
   PETE_MINT: existing.PETE_MINT || '',
-  ADMIN_PUBLIC_KEY: existing.ADMIN_PUBLIC_KEY || '',
-  DISTRIBUTOR_PUBLIC_KEY: existing.DISTRIBUTOR_PUBLIC_KEY || '',
+  DISTRIBUTOR_PUBLIC_KEY: existing.DISTRIBUTOR_PUBLIC_KEY || '6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr',
   HELIUS_API_KEY: heliusKey,
   HELIUS_RPC_URL: existing.HELIUS_RPC_URL || bundler.RPC_URL || (heliusKey ? `https://mainnet.helius-rpc.com/?api-key=${heliusKey}` : ''),
-  BIRDEYE_API_KEY: existing.BIRDEYE_API_KEY || bundler.BIRDEYE_API_KEY || '',
   DISTRIBUTOR_PRIVATE_KEY: existing.DISTRIBUTOR_PRIVATE_KEY || (fs.existsSync('.keys/distributor.json') ? '.keys/distributor.json' : ''),
-  ADMIN_PRIVATE_KEY: existing.ADMIN_PRIVATE_KEY || (fs.existsSync('.keys/admin.json') ? '.keys/admin.json' : ''),
   CRON_SECRET: existing.CRON_SECRET || '',
   DISTRIBUTOR_SOL_RESERVE: existing.DISTRIBUTOR_SOL_RESERVE || '0.02',
-  MIN_REWARD_SOL: existing.MIN_REWARD_SOL || '0.001'
+  MIN_REWARD_SOL: existing.MIN_REWARD_SOL || '0.001',
+  MIN_PAYOUT_LAMPORTS: existing.MIN_PAYOUT_LAMPORTS || '5000',
+  MIN_HOLDER_TOKENS: existing.MIN_HOLDER_TOKENS || '0',
+  DISTRIBUTION_BATCH_SIZE: existing.DISTRIBUTION_BATCH_SIZE || '12',
+  EXCLUDED_HOLDERS: existing.EXCLUDED_HOLDERS || ''
 };
 
 writeEnv(values);

@@ -45,21 +45,21 @@ function updateLocalEnv(values) {
   const merged = { ...current, ...values };
   const keys = [
     'SOLANA_NETWORK',
-    'STAKING_PROGRAM_ID',
     'PETE_MINT',
-    'ADMIN_PUBLIC_KEY',
     'DISTRIBUTOR_PUBLIC_KEY',
     'HELIUS_API_KEY',
     'HELIUS_RPC_URL',
-    'BIRDEYE_API_KEY',
     'DISTRIBUTOR_PRIVATE_KEY',
-    'ADMIN_PRIVATE_KEY',
     'CRON_SECRET',
     'DISTRIBUTOR_SOL_RESERVE',
-    'MIN_REWARD_SOL'
+    'MIN_REWARD_SOL',
+    'MIN_PAYOUT_LAMPORTS',
+    'MIN_HOLDER_TOKENS',
+    'DISTRIBUTION_BATCH_SIZE',
+    'EXCLUDED_HOLDERS'
   ];
   const lines = [
-    '# Local secrets for Palm Beach Pete staking.',
+    '# Local secrets for Palm Beach Pete holder rewards.',
     '# This file is gitignored. Do not paste these values into public code.',
     ''
   ];
@@ -89,14 +89,15 @@ patchProgramId(programId);
 
 updateLocalEnv({
   SOLANA_NETWORK: process.env.SOLANA_NETWORK || 'mainnet-beta',
-  STAKING_PROGRAM_ID: programId,
-  ADMIN_PUBLIC_KEY: admin.publicKey.toBase58(),
   DISTRIBUTOR_PUBLIC_KEY: distributor.publicKey.toBase58(),
-  ADMIN_PRIVATE_KEY: '.keys/admin.json',
   DISTRIBUTOR_PRIVATE_KEY: '.keys/distributor.json',
   CRON_SECRET: process.env.CRON_SECRET || crypto.randomBytes(24).toString('hex'),
   DISTRIBUTOR_SOL_RESERVE: process.env.DISTRIBUTOR_SOL_RESERVE || '0.02',
-  MIN_REWARD_SOL: process.env.MIN_REWARD_SOL || '0.001'
+  MIN_REWARD_SOL: process.env.MIN_REWARD_SOL || '0.001',
+  MIN_PAYOUT_LAMPORTS: process.env.MIN_PAYOUT_LAMPORTS || '5000',
+  MIN_HOLDER_TOKENS: process.env.MIN_HOLDER_TOKENS || '0',
+  DISTRIBUTION_BATCH_SIZE: process.env.DISTRIBUTION_BATCH_SIZE || '12',
+  EXCLUDED_HOLDERS: process.env.EXCLUDED_HOLDERS || ''
 });
 
 for (const entry of wallets) {

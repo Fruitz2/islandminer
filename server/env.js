@@ -6,7 +6,7 @@ const bs58 = bs58Module.default || bs58Module;
 
 const DEFAULT_ENV = {
   SOLANA_NETWORK: 'mainnet-beta',
-  STAKING_PROGRAM_ID: 'BxXchZ6JkP4ybA74BfA1itf7fGv6XqFtwnwSDX6JaCsj',
+  REWARD_MODE: 'holder-distribution',
   ADMIN_PUBLIC_KEY: '8GEiwuVVHykQTGHDPXjLXx2Szp3uRGXqX2ekrUu29TqB',
   DISTRIBUTOR_PUBLIC_KEY: '6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr'
 };

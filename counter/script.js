@@ -69,8 +69,7 @@
   }
 
   function statusLabel(data) {
-    if (!data.stakingConfigured) return 'AWAITING ENV';
-    if (!data.stakingInitialized) return 'AWAITING INIT';
+    if (!data.stakingConfigured) return 'AWAITING MINT';
     if (data.paused) return 'PAUSED';
     if (data.stakingEnabled) return 'LIVE';
     return 'SYNCING';
@@ -78,15 +77,12 @@
 
   function narrative(data) {
     if (!data.stakingConfigured) {
-      return 'The vault is staged. Once the token mint and staking program are configured in Vercel, this page starts reading live reward data.';
-    }
-    if (!data.stakingInitialized) {
-      return 'The program ID is known and the fee vault is standing by. After launch, the admin initializes the staking config with the final $PETE mint.';
+      return 'The holder reward system is staged. Add the final $PETE mint after launch and the public counter starts reading the payout ledger.';
     }
     if (data.totals.totalFundedSol > 0) {
-      return 'Creator-fee SOL has entered the vault. Stakers can claim their share from the program while this counter keeps the public record visible.';
+      return 'Creator-fee SOL has been paid directly to eligible $PETE holders. The latest holder snapshot and payout ledger are public here.';
     }
-    return 'The staking vault is live. The next creator-fee sweep from the distributor wallet will move the public counter for the first time.';
+    return 'Holder rewards are live. The next creator-fee SOL sent to the distributor wallet will be split across eligible holders on the hourly run.';
   }
 
   function render(data) {
@@ -120,13 +116,13 @@
       setText('vault-sol', fmtSol(value, 4) + ' SOL');
     });
 
-    setText('total-staked', data.totals.totalStaked || '0');
+    setText('total-staked', String(data.totals.eligibleHolderCount || 0));
     setText('price-line', 'SOL/USD ' + fmtUsd(data.price.priceUsd || 0) + ' via ' + String(data.price.source || 'unknown').toUpperCase());
     setText('last-updated', 'Last update: ' + new Date().toLocaleTimeString());
     setText('mode-line', label);
     setText('narrative-copy', narrative(data));
-    setText('program-id', short(data.programId));
-    setText('reward-vault', data.pdas && data.pdas.rewardVault ? short(data.pdas.rewardVault) : 'not configured');
+    setText('program-id', data.mode ? data.mode.replace('-', ' ') : 'holder distribution');
+    setText('reward-vault', data.distributorPublicKey ? short(data.distributorPublicKey) : 'not configured');
     setText('distributor', data.distributorPublicKey ? short(data.distributorPublicKey) : 'not configured');
     setText('price-source', String(data.price.source || 'pending').toUpperCase());
     setText('rpc-line', data.ok ? 'online' : 'waiting');

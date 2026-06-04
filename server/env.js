@@ -4,8 +4,15 @@ const bs58Module = require('bs58');
 
 const bs58 = bs58Module.default || bs58Module;
 
+const DEFAULT_ENV = {
+  SOLANA_NETWORK: 'mainnet-beta',
+  STAKING_PROGRAM_ID: 'BxXchZ6JkP4ybA74BfA1itf7fGv6XqFtwnwSDX6JaCsj',
+  ADMIN_PUBLIC_KEY: '8GEiwuVVHykQTGHDPXjLXx2Szp3uRGXqX2ekrUu29TqB',
+  DISTRIBUTOR_PUBLIC_KEY: '6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr'
+};
+
 function env(name, fallback = '') {
-  return process.env[name] || fallback;
+  return process.env[name] || DEFAULT_ENV[name] || fallback;
 }
 
 function requiredEnv(name) {

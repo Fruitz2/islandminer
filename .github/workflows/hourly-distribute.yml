@@ -8,15 +8,28 @@ on:
 jobs:
   distribute:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
-      - name: Trigger Vercel distributor endpoint
-        run: |
-          response="$(curl -sS -w '\n%{http_code}' \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "${{ secrets.DISTRIBUTE_URL }}")"
-          body="$(printf '%s' "$response" | sed '$d')"
-          code="$(printf '%s' "$response" | tail -n 1)"
-          printf '%s\n' "$body"
-          test "$code" -ge 200
-          test "$code" -lt 300
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Fund staking reward vault
+        run: node scripts/fund-rewards.js
+        env:
+          SOLANA_NETWORK: mainnet-beta
+          STAKING_PROGRAM_ID: BxXchZ6JkP4ybA74BfA1itf7fGv6XqFtwnwSDX6JaCsj
+          PETE_MINT: ${{ secrets.PETE_MINT }}
+          ADMIN_PUBLIC_KEY: 8GEiwuVVHykQTGHDPXjLXx2Szp3uRGXqX2ekrUu29TqB
+          DISTRIBUTOR_PUBLIC_KEY: 6ANEkZpZbzytNdk9tt6NcWCdKUTLDEF2tSYhw49hpfCr
+          HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
+          HELIUS_RPC_URL: ${{ secrets.HELIUS_RPC_URL }}
+          BIRDEYE_API_KEY: ${{ secrets.BIRDEYE_API_KEY }}
+          DISTRIBUTOR_PRIVATE_KEY: ${{ secrets.DISTRIBUTOR_PRIVATE_KEY }}
+          DISTRIBUTOR_SOL_RESERVE: ${{ secrets.DISTRIBUTOR_SOL_RESERVE }}
+          MIN_REWARD_SOL: ${{ secrets.MIN_REWARD_SOL }}

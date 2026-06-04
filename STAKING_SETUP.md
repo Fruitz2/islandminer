@@ -1,6 +1,6 @@
 # PETE Staking Setup
 
-This repo is safe to push public. Real API keys and private keys live only in Vercel env vars or the ignored local files `.env.local` and `.keys/`.
+This repo is safe to push public. Real API keys and private keys live only in GitHub/Vercel secrets or the ignored local files `.env.local` and `.keys/`.
 
 ## Generated Local Wallets
 
@@ -23,39 +23,31 @@ anchor deploy --program-keypair .keys/pete_staking-keypair.json
 npm run staking:init
 ```
 
-4. Set these Vercel env vars from `.env.local`:
+4. Set the public launch value in Vercel, or hardcode it as a public default after launch:
 
 ```bash
-STAKING_PROGRAM_ID
 PETE_MINT
-ADMIN_PUBLIC_KEY
-DISTRIBUTOR_PUBLIC_KEY
+```
+
+5. Put the private worker values in GitHub Actions secrets for `Fruitz2/islandminer`:
+
+```bash
+DISTRIBUTOR_PRIVATE_KEY
 HELIUS_API_KEY
 HELIUS_RPC_URL
 BIRDEYE_API_KEY
-DISTRIBUTOR_PRIVATE_KEY
-CRON_SECRET
 DISTRIBUTOR_SOL_RESERVE
 MIN_REWARD_SOL
 ```
 
-For Vercel, do not use `.keys/distributor.json` as the env value. That path only works locally. Use the base58 private key from `~/Desktop/epstein private keys.txt` for:
+Do not use `.keys/distributor.json` as a hosted secret value. That path only works locally. Use the base58 private key from `~/Desktop/epstein private keys.txt` for `DISTRIBUTOR_PRIVATE_KEY`.
 
-```bash
-DISTRIBUTOR_PRIVATE_KEY
-```
+Keep `ADMIN_PRIVATE_KEY` local unless you intentionally add an admin-only recovery endpoint later. The deployed app and hourly worker do not need it.
 
-Keep `ADMIN_PRIVATE_KEY` local unless you intentionally add an admin-only recovery endpoint later. The current deployed app does not need it.
+6. Manually send claimed Pump.fun creator-fee SOL to the distributor wallet.
+7. GitHub Actions runs `scripts/fund-rewards.js` every hour and funds the reward vault directly.
 
-5. Manually send claimed Pump.fun creator-fee SOL to the distributor wallet.
-6. GitHub Actions calls `/api/cron/distribute` every hour and funds the reward vault.
-
-Vercel only hosts the website and API endpoint. The hourly scheduler lives in `.github/workflows/hourly-distribute.yml`, so the project does not need Vercel Cron or Render. GitHub Actions needs these repository secrets:
-
-```bash
-CRON_SECRET
-DISTRIBUTE_URL
-```
+Vercel only hosts the website and API endpoint. The hourly scheduler lives in `.github/workflows/hourly-distribute.yml`, so the project does not need Vercel Cron or Render.
 
 If the scheduler is disabled or you want to fund manually, run:
 

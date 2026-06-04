@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EPSTEINMINER / PETE Fee Counter</title>
+<meta name="description" content="Live public counter for $PETE creator-fee SOL routed into the staking reward vault.">
+<meta property="og:title" content="EPSTEINMINER / PETE Fee Counter">
+<meta property="og:description" content="Live public counter for $PETE creator-fee SOL routed into the staking reward vault.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/og.png">
+<link rel="icon" href="/public/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/counter/styles.css">
+</head>
+<body>
+  <main class="counter-shell">
+    <section class="hero-band">
+      <div class="status-bar">
+        <a href="/" class="brand-lockup" aria-label="Back to Palm Beach Pete home">
+          <span class="brand-mark">P.</span>
+          <span>
+            <strong>PALM BEACH PETE</strong>
+            <small>creator-fee vault monitor</small>
+          </span>
+        </a>
+        <div class="live-state" id="live-state">
+          <span class="pulse"></span>
+          <strong>SYNCING</strong>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">PUBLIC LEDGER / STAKING REWARDS</p>
+          <h1>Creator fees into the vault, counted live.</h1>
+          <p class="lede">When $PETE creator-fee SOL is swept into the staking program, the pool updates here. Stakers share the reward vault by their live stake at the moment each sweep lands.</p>
+        </div>
+
+        <div class="subject-panel" aria-label="Palm Beach Pete biometric panel">
+          <picture>
+            <source srcset="/assets/pete-avatar.webp" type="image/webp">
+            <img src="/assets/pete-avatar.png" alt="Palm Beach Pete portrait" width="480" height="480">
+          </picture>
+          <div class="scan"></div>
+          <div class="subject-caption">
+            <span>SUBJECT VERIFIED</span>
+            <strong>NOT THE OTHER GUY</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="total-stage" aria-label="Main distributed fee counter">
+      <div class="total-label">TOTAL CREATOR FEES DISTRIBUTED</div>
+      <div class="total-values">
+        <div>
+          <span id="main-sol">0.0000</span>
+          <small>SOL</small>
+        </div>
+        <div>
+          <span id="main-usd">$0.00</span>
+          <small>LIVE USD</small>
+        </div>
+      </div>
+      <div class="total-foot">
+        <span id="price-line">SOL/USD syncing</span>
+        <span id="last-updated">Last update: --</span>
+      </div>
+    </section>
+
+    <section class="metric-grid" aria-label="Vault metrics">
+      <article class="metric-card">
+        <span>Claimed By Stakers</span>
+        <strong id="claimed-sol">0.0000 SOL</strong>
+        <small id="claimed-usd">$0.00</small>
+      </article>
+      <article class="metric-card">
+        <span>Allocated, Unclaimed</span>
+        <strong id="unclaimed-sol">0.0000 SOL</strong>
+        <small id="unclaimed-usd">$0.00</small>
+      </article>
+      <article class="metric-card">
+        <span>Reward Vault Balance</span>
+        <strong id="vault-sol">0.0000 SOL</strong>
+        <small>held by program PDA</small>
+      </article>
+      <article class="metric-card">
+        <span>$PETE Staked</span>
+        <strong id="total-staked">0</strong>
+        <small>live program total</small>
+      </article>
+    </section>
+
+    <section class="narrative-grid">
+      <div class="dispatch-panel">
+        <div class="panel-head">
+          <span>// TRANSMISSION</span>
+          <strong id="mode-line">Awaiting launch configuration</strong>
+        </div>
+        <p id="narrative-copy">The vault is staged. Once the token mint and staking program are initialized, every funded creator-fee sweep will update the public counter automatically.</p>
+        <div class="flow-line">
+          <div>
+            <span>01</span>
+            <strong>Pump.fun fees</strong>
+          </div>
+          <div>
+            <span>02</span>
+            <strong>Distributor wallet</strong>
+          </div>
+          <div>
+            <span>03</span>
+            <strong>Staking vault</strong>
+          </div>
+          <div>
+            <span>04</span>
+            <strong>Staker claims</strong>
+          </div>
+        </div>
+      </div>
+
+      <aside class="ledger-panel">
+        <div class="panel-head">
+          <span>// PUBLIC ACCOUNTS</span>
+          <strong id="rpc-line">server proxy</strong>
+        </div>
+        <dl>
+          <dt>Program</dt>
+          <dd id="program-id">not configured</dd>
+          <dt>Reward Vault</dt>
+          <dd id="reward-vault">not configured</dd>
+          <dt>Distributor</dt>
+          <dd id="distributor">not configured</dd>
+          <dt>Price Source</dt>
+          <dd id="price-source">pending</dd>
+        </dl>
+      </aside>
+    </section>
+  </main>
+
+  <script src="/counter/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+name: Hourly Reward Distribution
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Vercel distributor endpoint
+        run: |
+          response="$(curl -sS -w '\n%{http_code}' \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.DISTRIBUTE_URL }}")"
+          body="$(printf '%s' "$response" | sed '$d')"
+          code="$(printf '%s' "$response" | tail -n 1)"
+          printf '%s\n' "$body"
+          test "$code" -ge 200
+          test "$code" -lt 300

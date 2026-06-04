@@ -7,15 +7,8 @@
 <meta name="description" content="A pre launch classified case file for the $PETE memecoin. The official token of a Palm Beach resident who is not Jeffrey Epstein, plays tennis, and has lunch.">
 <meta property="og:title" content="PALM BEACH PETE / Case File 2026-0312-PETE">
 <meta property="og:description" content="Bureau of Memetic Identification case file for Subject P. Simel. The pre launch memecoin of a Palm Beach resident who is not Jeffrey Epstein, plays tennis, and has lunch.">
-<meta property="og:image" content="https://epsteinminer.xyz/og.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="PALM BEACH PETE">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://epsteinminer.xyz/og.png">
-<link rel="icon" href="assets/pete-avatar.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305080F'/%3E%3Crect x='2' y='2' width='28' height='28' fill='none' stroke='%23FF3B30' stroke-width='1.5'/%3E%3Ctext x='16' y='22' font-family='JetBrains Mono,monospace' font-weight='700' font-size='12' fill='%2300D4FF' text-anchor='middle'%3EP.%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -36,7 +29,8 @@
     <a href="#resemblance">05 FORENSIC</a>
     <a href="#phases">06 OPS</a>
     <a href="#acquire">07 PROC</a>
-    <a href="#staking">08 NODE</a>
+    <a href="#staking">08 STAKE</a>
+    <a href="/counter/">09 COUNTER</a>
   </div>
   <div class="topbar-right">
     <span class="signal">UPLINK<span class="signal-bars"><span></span><span></span><span></span><span></span></span></span>
@@ -717,30 +711,30 @@
   <div class="section-inner">
     <div class="section-head">
       <span class="sec-num">// 08</span>
-      <span class="sec-name">SURVEILLANCE NODE / STAKING TERMINAL</span>
-      <span class="sec-meta">AWAITING BUREAU DEPLOYMENT</span>
+      <span class="sec-name">FEE VAULT / STAKING TERMINAL</span>
+      <span class="sec-meta" id="staking-mode">SYNCING REWARD POOL</span>
     </div>
-    <h2 class="section-title">Deploy. Watch. <em>Yield</em>.</h2>
-    <p class="section-dek">Stake $PETE to deploy a watcher into the Bureau's surveillance grid. Each watcher returns $EpsteinMiner at a rate calibrated to the subject's confirmed tennis activity. The Bureau accepts no liability for emotional attachment to one's watcher.</p>
+    <h2 class="section-title">Stake. Pool. <em>Claim</em>.</h2>
+    <p class="section-dek">Stake $PETE to share the SOL creator-fee pool. Creator fees are swept into the vault, allocated across live stakers, and claimed directly from the staking program.</p>
 
     <div class="grid-stats">
       <div class="gs-card">
-        <span class="gs-label">DEPLOYED WATCHERS</span>
-        <span class="gs-value" id="gs-watchers">0000</span>
-        <span class="gs-note">awaiting first deployment</span>
+        <span class="gs-label">SOL FUNDED</span>
+        <span class="gs-value" id="total-funded-sol">0.0000</span>
+        <span class="gs-note" id="funded-note">awaiting first fee sweep</span>
       </div>
       <div class="gs-card">
-        <span class="gs-label">INTEL RATE</span>
-        <span class="gs-value cyan">--.--%</span>
-        <span class="gs-note">calibrated at launch</span>
+        <span class="gs-label">USD FUNDED</span>
+        <span class="gs-value cyan" id="total-funded-usd">$0.00</span>
+        <span class="gs-note" id="price-note">live SOL/USD pending</span>
       </div>
       <div class="gs-card">
-        <span class="gs-label">$EM ISSUED</span>
-        <span class="gs-value">0</span>
-        <span class="gs-note">no transmissions yet</span>
+        <span class="gs-label">$PETE STAKED</span>
+        <span class="gs-value" id="total-staked-pete">0</span>
+        <span class="gs-note" id="pool-note">pool not initialized</span>
       </div>
       <div class="gs-card hot">
-        <span class="gs-label">YOUR NODE</span>
+        <span class="gs-label">YOUR WALLET</span>
         <span class="gs-value red" id="gs-position">NOT AUTHORIZED</span>
         <span class="gs-note" id="gs-position-note">connect a node to begin</span>
       </div>
@@ -749,18 +743,18 @@
     <div class="staking-row">
       <div class="console">
         <div class="console-head">
-          <span>// DEPLOYMENT CONSOLE</span>
+          <span>// STAKING CONSOLE</span>
           <span class="console-status" id="wallet-status">NODE UNAUTHORIZED</span>
         </div>
         <div class="console-body">
           <div class="console-step active" id="step-auth">
             <span class="cs-num">01</span>
             <div class="cs-content">
-              <h5>Authorize Node</h5>
-              <p>Connect a Phantom wallet to register as a Bureau-affiliated surveillance node. No personal information is collected. Your public key is, however, briefly admired.</p>
+              <h5>Authorize Wallet</h5>
+              <p>Connect Phantom to read your $PETE balance, sign stake transactions, and claim SOL rewards assigned to your position.</p>
               <button class="console-btn primary" id="wallet-btn" type="button">
                 <span class="cb-dot"></span>
-                <span class="cb-label">AUTHORIZE PHANTOM NODE</span>
+                <span class="cb-label">CONNECT PHANTOM</span>
               </button>
             </div>
           </div>
@@ -768,25 +762,33 @@
           <div class="console-step disabled" id="step-deploy">
             <span class="cs-num">02</span>
             <div class="cs-content">
-              <h5>Deploy Watchers</h5>
-              <p>Stake $PETE to assign watchers to the grid. Each watcher returns $EpsteinMiner continuously, on an emission curve adjusted for the subject's lunch reservations and tennis attendance.</p>
+              <h5>Stake $PETE</h5>
+              <p>Lock $PETE in the program vault. New SOL fees are allocated by your share of the staked pool at the moment each sweep lands.</p>
               <div class="cs-input-row">
-                <input type="text" class="cs-input" placeholder="$PETE to deploy as watchers" disabled aria-label="Amount to stake" id="stake-input">
-                <button class="console-btn" disabled id="deploy-btn">AWAITING DEPLOYMENT</button>
+                <input type="text" class="cs-input" placeholder="$PETE amount" inputmode="decimal" disabled aria-label="Amount of PETE to stake or unstake" id="stake-input">
+                <div class="cs-button-pair">
+                  <button class="console-btn primary" disabled id="stake-btn">STAKE</button>
+                  <button class="console-btn" disabled id="unstake-btn">UNSTAKE</button>
+                </div>
               </div>
-              <p class="cs-balance">$PETE balance: <strong id="pete-bal">&mdash;</strong> &nbsp;/&nbsp; $EpsteinMiner accruing: <strong id="em-accruing">&mdash;</strong></p>
+              <p class="cs-balance">$PETE balance: <strong id="pete-bal">--</strong> &nbsp;/&nbsp; staked: <strong id="pete-staked">--</strong></p>
             </div>
           </div>
 
           <div class="console-step disabled" id="step-claim">
             <span class="cs-num">03</span>
             <div class="cs-content">
-              <h5>Recall &amp; Claim</h5>
-              <p>Recall deployed watchers and harvest accrued $EpsteinMiner. The reward token is transferred to your wallet at the prevailing emission rate, sealed in a manila envelope, and delivered by a man who insists on calling himself the courier.</p>
+              <h5>Claim SOL</h5>
+              <p>Claimable rewards stay in the program vault until your wallet signs a claim. Unstaked users keep rewards already allocated to them.</p>
               <div class="cs-input-row">
-                <button class="console-btn" disabled>RECALL WATCHERS</button>
-                <button class="console-btn primary" disabled>CLAIM $EM</button>
+                <div class="claim-meter">
+                  <span>CLAIMABLE</span>
+                  <strong id="sol-claimable">0.0000 SOL</strong>
+                  <small id="claimable-usd">$0.00</small>
+                </div>
+                <button class="console-btn primary" disabled id="claim-btn">CLAIM SOL</button>
               </div>
+              <p class="stake-message" id="stake-message">fee vault waiting for configuration</p>
             </div>
           </div>
         </div>
@@ -794,40 +796,40 @@
 
       <div class="transmissions">
         <div class="trans-head">
-          <span>// ACTIVE TRANSMISSIONS</span>
-          <span class="trans-live">OFFLINE</span>
+          <span>// REWARD POOL TELEMETRY</span>
+          <span class="trans-live" id="pool-live">OFFLINE</span>
         </div>
         <div class="trans-body">
           <div class="trans-pending">
             <span class="tp-icon"></span>
-            <p>The grid is offline pending Bureau deployment. When live, this panel will receive real-time transmissions from authorized nodes. Subject sightings, watcher activity, and emission events will appear here at the rate they occur.</p>
+            <p id="pool-summary">The fee vault is waiting for the staking program, token mint, and private distributor wallet to be configured.</p>
           </div>
 
           <div class="trans-examples">
-            <span class="te-label">// SAMPLE TRANSMISSION FORMAT</span>
+            <span class="te-label">// LIVE ACCOUNT READOUT</span>
             <div class="te-row">
-              <span class="te-ts">--:--:--</span>
-              <span class="te-node">NODE @<span class="redact">████████</span></span>
-              <span class="te-action">deploys 1,000 watchers</span>
-              <span class="te-yield">+0.04 $EM/MIN</span>
+              <span class="te-ts">RPC</span>
+              <span class="te-node">SERVER PROXY</span>
+              <span class="te-action">Helius calls stay server-side; browser receives public stats only.</span>
+              <span class="te-yield" id="rpc-status">WAITING</span>
             </div>
             <div class="te-row">
-              <span class="te-ts">--:--:--</span>
-              <span class="te-node">NODE @<span class="redact">████████</span></span>
-              <span class="te-action">claims 247 $EM, recalls watchers</span>
-              <span class="te-yield amber">&mdash; GRID DRAW</span>
+              <span class="te-ts">PRICE</span>
+              <span class="te-node">SOL/USD</span>
+              <span class="te-action">Latest price source used for the USD counter.</span>
+              <span class="te-yield amber" id="price-source">PENDING</span>
             </div>
             <div class="te-row alert">
-              <span class="te-ts">--:--:--</span>
-              <span class="te-node">SUBJECT EVENT</span>
-              <span class="te-action">subject observed eating lunch at noon, Worth Avenue</span>
-              <span class="te-yield">+12.4 $EM TO GRID</span>
+              <span class="te-ts">VAULT</span>
+              <span class="te-node">REWARD PDA</span>
+              <span class="te-action" id="reward-vault-address">not configured</span>
+              <span class="te-yield" id="vault-balance">0.0000 SOL HELD</span>
             </div>
             <div class="te-row alert">
-              <span class="te-ts">--:--:--</span>
-              <span class="te-node">SUBJECT EVENT</span>
-              <span class="te-action">subject says "peace out" on camera, alone</span>
-              <span class="te-yield">+8.1 $EM TO GRID</span>
+              <span class="te-ts">CRON</span>
+              <span class="te-node">HOURLY SWEEP</span>
+              <span class="te-action" id="distributor-address">distributor wallet not configured</span>
+              <span class="te-yield" id="claimed-total">0.0000 SOL CLAIMED</span>
             </div>
           </div>
         </div>
@@ -835,9 +837,9 @@
     </div>
 
     <div class="grid-footer">
-      <span>// REWARD TOKEN. <strong class="cyan">$EpsteinMiner</strong></span>
-      <span>// EMISSION. calibrated to subject's tennis attendance</span>
-      <span>// GRID. <strong class="red">AWAITING BUREAU AUTHORIZATION</strong></span>
+      <span>// STAKE TOKEN. <strong class="cyan">$PETE</strong></span>
+      <span>// REWARD ASSET. native <strong class="cyan">SOL</strong></span>
+      <span>// VAULT. <strong class="red" id="vault-state">AWAITING CONFIGURATION</strong></span>
     </div>
   </div>
 </section>
@@ -861,7 +863,8 @@
         <a href="#resemblance">05 Forensic</a>
         <a href="#phases">06 Operational</a>
         <a href="#acquire">07 Procurement</a>
-        <a href="#staking">08 Surveillance Node</a>
+        <a href="#staking">08 Staking Vault</a>
+        <a href="/counter/">09 Live Counter</a>
       </div>
       <div class="colo-col">
         <h6>// ON THE RECORD</h6>
@@ -894,6 +897,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 <script src="scripts/main.js"></script>
+<script type="module" src="scripts/staking.js"></script>
 
 </body>
 </html>

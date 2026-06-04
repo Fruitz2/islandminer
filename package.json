@@ -3,9 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "npx serve .",
+    "dev:vercel": "vercel dev --yes --listen 127.0.0.1:3005",
     "build": "echo 'Static site - no build needed'",
-    "start": "echo 'Static site - no start needed'"
+    "start": "echo 'Static site - no start needed'",
+    "serve": "npx serve .",
+    "setup:env": "node scripts/setup-local-env.js",
+    "wallets:generate": "node scripts/generate-wallets.js",
+    "staking:init": "node scripts/init-staking.js",
+    "staking:fund": "node scripts/fund-rewards.js",
+    "staking:sweep": "node scripts/sweep-unallocated.js"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.98.4",
+    "bs58": "^6.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^48.12.0"
+  }
 }

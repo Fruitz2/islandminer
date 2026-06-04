@@ -1030,6 +1030,13 @@ h2.section-title em {
   margin-bottom: 10px;
 }
 
+.cs-button-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(112px, 1fr));
+  gap: 10px;
+  min-width: 246px;
+}
+
 .cs-input {
   background: var(--void);
   border: 1px solid var(--border-hot);
@@ -1099,6 +1106,50 @@ h2.section-title em {
 
 .console-btn.primary:hover .cb-dot { background: var(--cyan); }
 
+.claim-meter {
+  min-height: 56px;
+  border: 1px solid var(--border-hot);
+  background: var(--void);
+  padding: 10px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 14px;
+  align-items: baseline;
+  font-family: var(--mono);
+}
+
+.claim-meter span {
+  color: var(--text-dim);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+}
+
+.claim-meter strong {
+  color: var(--green);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.claim-meter small {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.stake-message {
+  margin-top: 12px;
+  margin-bottom: 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.stake-message[data-tone="ok"] { color: var(--green); }
+.stake-message[data-tone="warn"] { color: var(--amber); }
+
 .cs-balance {
   font-family: var(--mono);
   font-size: 11px;
@@ -1152,6 +1203,12 @@ h2.section-title em {
   border-radius: 50%;
   box-shadow: 0 0 5px var(--red);
   animation: blink 1.2s infinite;
+}
+
+.trans-live.online { color: var(--green); }
+.trans-live.online::before {
+  background: var(--green);
+  box-shadow: 0 0 5px var(--green);
 }
 
 .trans-body {
@@ -2117,6 +2174,7 @@ footer.colophon::before {
   .gs-card { border-right: none; border-bottom: 1px solid var(--border); }
   .gs-card:last-child { border-bottom: none; }
   .cs-input-row { grid-template-columns: 1fr; }
+  .cs-button-pair { min-width: 0; }
   .grid-footer { padding: 14px 16px; gap: 10px; }
 }
 
